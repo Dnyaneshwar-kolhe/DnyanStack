@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Code With Kaustubh</title>
+  <link rel="stylesheet" href="css/coding.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/all.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+  // Redirect back if not logged in
+  if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "index.html"; // or login page
+  }
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+  function buyCourse(course, amount) {
+    var options = {
+      "key": "rzp_test_CWKpvdJclovfui", // Replace with your Razorpay key ID
+      "amount": amount * 100, // Amount in paise
+      "currency": "INR",
+      "name": "Code With Kaustubh",
+      "description": `Payment for ${course}`,
+      "handler": function (response){
+          alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+          // You can redirect or show a confirmation page here
+          if (course === "C Language") {
+            window.location.href = "c-lang.html";
+        } else if (course === "HTML & CSS") {
+            window.location.href = "ps.html";
+        } else if (course === "JavaScript") {
+            window.location.href = "java.html";
+        }
+      },
+      "prefill": { 
+          "name": "Your User",
+          "email": "user@example.com",
+          "contact": "9999999999"
+      },
+      "theme": {
+          "color": "#3399cc"
+      }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+  }
+</script>
+</head>
+<body>
+  <!-- Replace the #pricing section in your code with the following updated Courses Section -->
+
+<section id="courses" class="container my-5">
+  <h2 class="text-center mb-4">Courses</h2>
+  <p class="text-center">Learn industry-ready skills with real-world cohort training!</p>
+
+  <div class="row">
+
+    <!-- Course 1 -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="images/devops-blockchain.jpg" class="card-img-top" alt="C-Language">
+        <div class="card-body">
+          <h5 class="card-title">C-Language</h5>
+          <p class="card-text">Syllabus: <a href="https://blog.100xdevs.com/" target="_blank"></a></p>
+          <p><del>₹3,199</del> <strong>₹2,700</strong> <span class="text-success">15.61% off</span></p>
+          <button class="btn btn-lg btn-block btn-outline-dark" onclick="buyCourse('C Language', 2700)">Buy Now</button>
+          <a href="#" class="btn btn-outline-secondary btn-block mt-2">View Details</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course 2 -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="images/webdev-devops.jpg" class="card-img-top" alt="HTML + CSS">
+        <div class="card-body">
+          <h5 class="card-title">HTML + CSS</h5>
+          <p class="card-text">Starts 2nd August 2024<br>Syllabus: <a href="https://blog.100xdevs.com/" target="_blank"></a></p>
+          <p><del>₹3,999</del> <strong>₹2,989</strong> <span class="text-success">16.84% off</span></p>
+          <button class="btn btn-primary btn-block" onclick="buyCourse('HTML & CSS', 4989)">Buy Now</button>
+          <a href="#" class="btn btn-outline-secondary btn-block mt-2">View Details</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course 3 -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="images/web3.jpg" class="card-img-top" alt="Web3 Cohort">
+        <div class="card-body">
+          <h5 class="card-title">Web3 / Blockchain Cohort</h5>
+          <p class="card-text">Syllabus: <a href="https://blog.100xdevs.com/" target="_blank">100xdevs.com</a></p>
+          <p><del>₹5,989</del> <strong>₹4,989</strong> <span class="text-success">16.84% off</span></p>
+          <button class="btn btn-primary btn-block" onclick="buyCourse('Web3 / Blockchain', 4989)">Buy Now</button>
+          <a href="#" class="btn btn-outline-secondary btn-block mt-2">View Details</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course 4 -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="images/mern-devops.jpg" class="card-img-top" alt="MERN DevOps">
+        <div class="card-body">
+          <h5 class="card-title">MERN + DevOps + System Design</h5>
+          <p class="card-text">Open Source Projects + GSOC + Backend</p>
+          <p><del>₹6,999</del> <strong>₹4,899</strong> <span class="text-success">30% off</span></p>
+          <button class="btn btn-primary btn-block" onclick="buyCourse('MERN + DevOps + Design', 4899)">Buy Now</button>
+          <a href="#" class="btn btn-outline-secondary btn-block mt-2">View Details</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Add this to your CSS file (coding.css or inside <style>) -->
+<style>
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.card-text {
+  font-size: 0.95rem;
+}
+
+.card p {
+  margin-bottom: 0.5rem;
+}
+</style>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Code With Kaustubh</title>
+  <link rel="stylesheet" href="css/coding.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/all.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+  // Redirect back if not logged in
+  if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "index.html"; // or login page
+  }
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+  function buyCourse(course, amount) {
+    var options = {
+      "key": "rzp_test_CWKpvdJclovfui", // Replace with your Razorpay key ID
+      "amount": amount * 100, // Amount in paise
+      "currency": "INR",
+      "name": "Code With Kaustubh",
+      "description": `Payment for ${course}`,
+      "handler": function (response){
+          alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+          // You can redirect or show a confirmation page here
+          if (course === "C Language") {
+            window.location.href = "c-lang.html";
+        } else if (course === "HTML & CSS") {
+            window.location.href = "ps.html";
+        } else if (course === "JavaScript") {
+            window.location.href = "java.html";
+        }
+      },
+      "prefill": { 
+          "name": "Your User",
+          "email": "user@example.com",
+          "contact": "9999999999"
+      },
+      "theme": {
+          "color": "#3399cc"
+      }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+  }
+</script>
+
+<style>
+  .logout-btn {
+      position:absolute;
+      /* bottom: ; */
+      left: 150px;
+      padding: 10px 20px;
+      /* background-color: #ff4d4d; */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+
+  /* .logout-btn:hover {
+      background-color: #ff1a1a;
+  } */
+  .navbar .btn-danger {
+  margin-left: 10px;
+  padding: 5px 15px;
+  border-radius: 20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+  <section id="title">
+     
+    <div class="container-fluid" id="container-fluid">
+    <!-- Nav Bar -->
+     <nav class="navbar navbar-expand-lg navbar-dark" id="navbar-1">
+       <a class="navbar-brand" href="#">Kaustubh</a>
+
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#pricing">Courses</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+        <!-- <li class="nav-item"><a class="nav-link" href="#">Logout</a></li> -->
+        <li class="nav-item">
+          <button class="btn btn-danger btn-sm ml-lg-3" onclick="logout()">Logout</button>
+        </li>
+        
+      </ul>
+     </div>
+     
+    </nav>
+
+    <!-- Title -->
+
+    <div class="row">
+      
+      <div class="col-lg-6">
+      <h1 >Learn New Language & Technologies.</h1>
+      <!-- <button class="btn btn-dark btn-lg download-button" type="button"><i class="fab fa-apple"></i> Download</button>
+      <button class="btn btn-outline-light btn-lg download-button" type="button"><i class="fab fa-google-play"></i> Download</button> -->
+    </div>
+      
+     <!-- <div class="col-lg-6">   
+      <img class="title-image" src="coder.png" alt="iphone-mockup">
+    </div> -->
+
+     </div>
+ 
+  </div>
+  </section>
+
+
+  <!-- Features -->
+
+  <!-- <section id="features">
+    
+    <div class="row">
+
+    <div class="feature-box col-lg-4">
+    <i class="icon fas fa-check-circle fa-4x"></i>   
+    <h3>Easy to learn.</h3>
+    <p>.</p>
+   </div>
+
+    <div class="feature-box col-lg-4">
+    <i class="icon fas fa-bullseye fa-4x"></i>   
+    <h3>Challenge</h3>
+    <p>Every Weak.</p>
+    </div>
+
+    <div class="feature-box col-lg-4">
+      <i class="icon fas fa-heart fa-4x"></i>   
+      <h3>Guaranteed .</h3>
+    <p> create your own projects.</p>
+    </div>
+    
+    </div>
+
+  </section> -->
+
+
+  <!-- Testimonials -->
+<!-- 
+  <section id="testimonials">
+
+   <div id="testimonial-carousel" class="carousel slide" data-ride="false">
+     <div class="carousel-inner">
+       <div class="carousel-item active">
+        <h2></h2>
+        <img class="testimonial-image" src="mypng.png" alt="dog-profile">
+        <em>Kaustubh, Bamnod</em>
+       </div>
+
+       <div class="carousel-item">
+        <!-- <h2 class="testimonial-text">My dog used to be so lonely, but with TinDog's help, they've found the love of their life. I think.</h2> -->
+        <!-- <img class="testimonial-image" src="images/lady-img.jpg" alt="lady-profile">
+        <em>Beverly, Illinois</em>
+      </div>
+
+     </div>
+
+     <a class="carousel-control-prev" href="#testimonial-carousel" role="button" data-slide="prev">
+       <span class="carousel-control-prev-icon"></span>
+     
+      </a>
+      <a class="carousel-control-next" href="#testimonial-carousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </a>
+   </div> -->
+
+   
+    
+
+  <!-- </section> --> 
+
+
+  <!-- Press -->
+
+  <!-- <section id="press">
+    <img class="press-logo" src="images/techcrunch.png" alt="tc-logo">
+    <img class="press-logo" src="images/tnw.png" alt="tnw-logo">
+    <img class="press-logo" src="images/bizinsider.png" alt="biz-insider-logo">
+    <img class="press-logo" src="images/mashable.png" alt="mashable-logo">
+
+  </section> -->
+
+
+  <!-- Pricing -->
+
+  <section id="pricing">
+
+    <h2>A Plan for Everyone</h2>
+    <p>Simple and affordable price plans for you.</p>
+
+    <div class="row">
+      
+      <div class="pricing-column col-lg-4 col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3>C-Language</h3>
+          </div>
+          <div class="card-body">
+            <h2>Paid</h2>
+            <h3>&#8377 1000</h3>
+            <p>All Topic Coverd</p>
+            <button class="btn btn-lg btn-block btn-outline-dark" onclick="buyCourse('C Language', 1000)">Buy Now</button>
+
+          </div>
+        </div>
+      </div>
+    
+      <div class="pricing-column col-lg-4 col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3>HTML & CSS</h3>
+          </div>
+          <div class="card-body">
+            <!-- <h2>&#8377 1000</h2>
+            <p>Unlimited Matches</p>
+            <p>Unlimited Messages</p>
+            <p>Unlimited App Usage</p> -->
+            <h2>Paid</h2>
+            <h3>&#8377 1500</h3>
+            <p>All Topic Coverd With 2 website </p>
+            <button class="btn btn-lg btn-block btn-dark" onclick="buyCourse('HTML & CSS', 1500)">Buy Now</button>
+
+          </div>
+        </div>
+      </div>
+
+    <div class="pricing-column col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <h3>JavaScript</h3>
+        </div>
+        <div class="card-body">
+            <h2>Paid</h2>
+          <h3>&#8377 2000</h3>
+          <!-- <p>Pirority Listing</p>
+          <p>Unlimited Matches</p>
+          <p>Unlimited Messages</p> -->
+          <p>All Topic Coverd With 2 website</p>
+          <button class="btn btn-lg btn-block btn-dark" onclick="buyCourse('JavaScript', 2000)">Buy Now</button>
+
+        </div>
+      </div>
+    </div>
+
+   
+  </div>
+  </section>
+
+
+  <!-- Call to Action -->
+
+  <section id="cta">
+
+    <!-- <h3>Find the True Love of Your Dog's Life Today.</h3> -->
+    <!-- <button class="btn btn-dark btn-lg download-button" type="button"><i class="fab fa-apple"></i> Download</button>
+    <button class="btn btn-outline-light btn-lg download-button" type="button"><i class="fab fa-google-play"></i> Download</button> -->
+
+  </section>
+  
+  <!-- <button class="logout-btn" onclick="logout()">Logout</button> -->
+
+<script>
+    function logout() {
+        localStorage.removeItem("isLoggedIn");
+        window.location.href = "index.html";
+    }
+</script>
+
+
+  <script>
+    // Redirect back if not logged in
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.href = "index.html"; // or login page
+    }
+</script>
+
+
+  <!-- Footer -->
+
+  <footer id="footer">
+
+    <p class="text-center">© Copyright 2021 Kaustubh Kolhe</p>
+
+  </footer>
+
+
+</body>
+
+</html>
