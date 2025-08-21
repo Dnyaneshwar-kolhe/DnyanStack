@@ -541,3 +541,375 @@
 
 </body>
 </html> 
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DnyanStack</title>
+  <link rel="stylesheet" href="css/project.css" />
+  <link rel="stylesheet" href="css/all.css" />
+  <style>
+    .popup-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none; align-items: center; justify-content: center;
+      z-index: 999;
+    }
+    .popup-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .popup-box input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .popup-box button {
+      padding: 10px 15px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="leftmenu">
+      <div class="logo"><a href="#">DnyanStack</a></div>
+      <div class="submenu">
+        <a href="#home"><li>Home</li></a>
+        <a href="#section_two"><li>About</li></a>
+        <a href="javascript:void(0);" onclick="checkLoginOrRedirect()"><li>Courses</li></a>
+        <a href="#"><li>Tips</li></a>
+      </div>
+    </div>
+
+    <div class="rightmenu">
+      <div class="submenu">
+       
+        <a href="javascript:void(0);" onclick="openSignupPopup()"><button>Sign Up</button></a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<section class="mainhero" id="home">
+  <div class="heroleft">
+    <h1>Best Way To Learn Programming Language</h1>
+    <p>Make your fundamentals clear. Learn by doing, Practicing and not just reading. Code by hand. Ask for help. Take breaks. Learn to use debugger.</p>
+  </div>
+  <div class="heroright">
+    <img src="images/codeboyk.png" alt="">
+  </div>
+</section>
+
+<section class="common_section" id="section_two">
+  <div class="leftside"><figure><img src="images/mobile.png" alt=""></figure></div>
+  <div class="rightside">
+    <h2>Your Coding App</h2>
+    <p>Visual studio code one of the best IDEs. This IDE provides you some extra features. For more information click on the buttons.</p>
+    <div class="btngroup">
+      <button class="common-btn">Get Started</button>
+      <button class="common-btn-normal">How It Works</button>
+    </div>
+  </div>
+</section>
+
+
+<div class="popup-bg" id="loginPopup">
+  <div class="popup-box">
+    <h2>Login</h2>
+    <input type="email" id="username" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="handleLogin()">Login</button>
+    <button class="close-btn" onclick="closeLoginPopup()">Close</button>
+    <p id="login-error" style="color:red; display:none;">Invalid credentials. Try again!</p>
+  </div>
+</div>
+
+
+<div class="popup-bg" id="signupPopup">
+  <div class="popup-box">
+    <h2>Sign Up</h2>
+    <input type="email" id="signupEmail" placeholder="Email" />
+    <input type="password" id="signupPassword" placeholder="Create Password" />
+    <button onclick="handleSignup()">Sign Up</button>
+    <button class="close-btn" onclick="closeSignupPopup()">Close</button>
+    <p id="signup-error" style="color:red; display:none;">User already exists!</p>
+  </div>
+</div>
+
+<script>
+  function openLoginPopup() {
+    document.getElementById("loginPopup").style.display = "flex";
+    document.getElementById("login-error").style.display = "none";
+  }
+
+  function closeLoginPopup() {
+    document.getElementById("loginPopup").style.display = "none";
+  }
+
+  function openSignupPopup() {
+    document.getElementById("signupPopup").style.display = "flex";
+    document.getElementById("signup-error").style.display = "none";
+  }
+
+  function closeSignupPopup() {
+    document.getElementById("signupPopup").style.display = "none";
+  }
+
+  function handleSignup() {
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+
+    if (users[email]) {
+      document.getElementById("signup-error").style.display = "block";
+      return;
+    }
+
+    users[email] = password;
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("userEmail", email);
+
+    window.location.href = "coding.html";
+  }
+
+  function handleLogin() {
+    const email = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+
+    if (users[email] && users[email] === password) {
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userEmail", email);
+      window.location.href = "coding.html";
+    } else {
+      document.getElementById("login-error").style.display = "block";
+    }
+  }
+
+  function checkLoginOrRedirect() {
+    if (localStorage.getItem("isLoggedIn") === "true") {
+      window.location.href = "coding.html";
+    } else {
+      openLoginPopup();
+    }
+  }
+</script>
+
+</body>
+</html> -->
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DnyanStack</title>
+  <link rel="stylesheet" href="css/project.css" />
+  <link rel="stylesheet" href="css/all.css" />
+  <style>
+    .popup-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none; align-items: center; justify-content: center;
+      z-index: 999;
+    }
+    .popup-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .popup-box input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .popup-box button {
+      padding: 10px 15px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="leftmenu">
+      <div class="logo"><a href="#">DnyanStack</a></div>
+      <div class="submenu">
+        <a href="#home"><li>Home</li></a>
+        <a href="#section_two"><li>About</li></a>
+        <a href="javascript:void(0);" onclick="checkLoginOrRedirect()"><li>Courses</li></a>
+        <a href="#"><li>Tips</li></a>
+      </div>
+    </div>
+
+    <div class="rightmenu">
+      <div class="submenu">
+        <a href="javascript:void(0);" onclick="openSignupPopup()"><button>Sign Up</button></a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<section class="mainhero" id="home">
+  <div class="heroleft">
+    <h1>Best Way To Learn Programming Language</h1>
+    <p>Make your fundamentals clear. Learn by doing, Practicing and not just reading. Code by hand. Ask for help. Take breaks. Learn to use debugger.</p>
+  </div>
+  <div class="heroright">
+    <img src="images/codeboyk.png" alt="">
+  </div>
+</section>
+
+<section class="common_section" id="section_two">
+  <div class="leftside"><figure><img src="images/mobile.png" alt=""></figure></div>
+  <div class="rightside">
+    <h2>Your Coding App</h2>
+    <p>Visual studio code one of the best IDEs. This IDE provides you some extra features. For more information click on the buttons.</p>
+    <div class="btngroup">
+      <button class="common-btn">Get Started</button>
+      <button class="common-btn-normal">How It Works</button>
+    </div>
+  </div>
+</section>
+
+<div class="popup-bg" id="loginPopup">
+  <div class="popup-box">
+    <h2>Login</h2>
+    <input type="email" id="username" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="handleLogin()">Login</button>
+    <button class="close-btn" onclick="closeLoginPopup()">Close</button>
+    <p id="login-error" style="color:red; display:none;">Invalid credentials. Try again!</p>
+  </div>
+</div>
+
+<div class="popup-bg" id="signupPopup">
+  <div class="popup-box">
+    <h2>Sign Up</h2>
+    <input type="email" id="signupEmail" placeholder="Email" />
+    <input type="password" id="signupPassword" placeholder="Create Password" />
+    <input type="text" id="otpInput" placeholder="Enter OTP" style="display:none;" />
+    <button id="sendOtpBtn" onclick="sendOtp()">Send OTP</button>
+    <button id="verifyOtpBtn" onclick="verifyOtp()" style="display:none;">Verify & Sign Up</button>
+    <button class="close-btn" onclick="closeSignupPopup()">Close</button>
+    <p id="signup-error" style="color:red; display:none;">User already exists or wrong OTP!</p>
+  </div>
+</div>
+
+<script>
+  let generatedOtp = "";
+
+  function openLoginPopup() {
+    document.getElementById("loginPopup").style.display = "flex";
+    document.getElementById("login-error").style.display = "none";
+  }
+
+  function closeLoginPopup() {
+    document.getElementById("loginPopup").style.display = "none";
+  }
+
+  function openSignupPopup() {
+    document.getElementById("signupPopup").style.display = "flex";
+    document.getElementById("signup-error").style.display = "none";
+  }
+
+  function closeSignupPopup() {
+    document.getElementById("signupPopup").style.display = "none";
+  }
+
+  function sendOtp() {
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+    if (!email || !password) {
+      alert("Please enter email and password");
+      return;
+    }
+
+    generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    alert("Your OTP is: " + generatedOtp); // Replace with email API in real app
+
+    document.getElementById("otpInput").style.display = "block";
+    document.getElementById("verifyOtpBtn").style.display = "inline-block";
+    document.getElementById("sendOtpBtn").style.display = "none";
+  }
+
+  function verifyOtp() {
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+    const otp = document.getElementById("otpInput").value;
+
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+
+    if (users[email]) {
+      document.getElementById("signup-error").innerText = "User already exists!";
+      document.getElementById("signup-error").style.display = "block";
+      return;
+    }
+
+    if (otp === generatedOtp) {
+      users[email] = password;
+      localStorage.setItem("users", JSON.stringify(users));
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userEmail", email);
+      window.location.href = "coding.html";
+    } else {
+      document.getElementById("signup-error").innerText = "Wrong OTP. Try again!";
+      document.getElementById("signup-error").style.display = "block";
+    }
+  }
+
+  function handleLogin() {
+    const email = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+
+    if (users[email] && users[email] === password) {
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("userEmail", email);
+      window.location.href = "coding.html";
+    } else {
+      document.getElementById("login-error").style.display = "block";
+    }
+  }
+
+  function checkLoginOrRedirect() {
+    if (localStorage.getItem("isLoggedIn") === "true") {
+      window.location.href = "coding.html";
+    } else {
+      openLoginPopup();
+    }
+  }
+</script>
+
+</body>
+</html> -->

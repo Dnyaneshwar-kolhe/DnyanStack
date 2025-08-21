@@ -7,138 +7,297 @@
   <link rel="stylesheet" href="css/coding.css">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/all.css">
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script>
-  // Redirect back if not logged in
-  if (localStorage.getItem("isLoggedIn") !== "true") {
-      window.location.href = "index.html"; // or login page
-  }
-</script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-<script>
-  function buyCourse(course, amount) {
-    var options = {
-      "key": "rzp_test_CWKpvdJclovfui", // Replace with your Razorpay key ID
-      "amount": amount * 100, // Amount in paise
-      "currency": "INR",
-      "name": "Code With Kaustubh",
-      "description": `Payment for ${course}`,
-      "handler": function (response){
-          alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
-          // You can redirect or show a confirmation page here
-          if (course === "C Language") {
-            window.location.href = "c-lang.html";
-        } else if (course === "HTML & CSS") {
-            window.location.href = "ps.html";
-        } else if (course === "JavaScript") {
-            window.location.href = "java.html";
-        }
-      },
-      "prefill": { 
-          "name": "Your User",
-          "email": "user@example.com",
-          "contact": "9999999999"
-      },
-      "theme": {
-          "color": "#3399cc"
-      }
-    };
-    var rzp1 = new Razorpay(options);
-    rzp1.open();
-  }
-</script>
+  <!-- Auth Check -->
+  <script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "index.html";
+    }
+  </script>
+  <style>
+    header {
+      background: #fff;
+      padding: 20px 40px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    header nav {
+      display: flex;
+      gap: 20px;
+      font-weight: 500;
+    }
+
+    .user-menu {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .user-icon-circle {
+      background: #dbeafe;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-icon-circle::before {
+      content: "👤";
+      font-size: 18px;
+    }
+
+    .arrow {
+      display: inline-block;
+      margin-left: 6px;
+      font-size: 12px;
+      transition: transform 0.2s ease;
+    }
+
+    .arrow.open {
+      transform: rotate(180deg);
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 65px;
+      right: 40px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      width: 160px;
+      display: none;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    .dropdown.active {
+      display: flex;
+    }
+
+    .dropdown a {
+      padding: 12px 16px;
+      text-decoration: none;
+      color: #111827;
+      font-weight: 500;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .dropdown a:last-child {
+      border-bottom: none;
+      color: red;
+    }
+
+    .dropdown a:hover {
+      background: #f9fafb;
+    }
+  </style>
 </head>
+
 <body>
-  <!-- Replace the #pricing section in your code with the following updated Courses Section -->
+  <!-- <li class="nav-item">
+    <button class="btn btn-danger btn-sm ml-lg-3" onclick="logout()">Logout</button>
+  </li> -->
 
-<section id="courses" class="container my-5">
-  <h2 class="text-center mb-4">Courses</h2>
-  <p class="text-center">Simple and affordable price plans for you.</p>
-
-  <div class="row">
-
-    <!-- Course 1 -->
-    <div class="col-md-4 mb-4">
-      <div class="card h-100 shadow-sm">
-        <img src="images/devops-blockchain.jpg" class="card-img-top" alt="C-Language">
-        <div class="card-body">
-          <h5 class="card-title">C-Language</h5>
-          <p class="card-text">Syllabus: <a href="https://blog.100xdevs.com/" target="_blank"></a></p>
-          <p><del>₹2,599</del> <strong>₹1,499</strong> <span class="text-success">42.32% off</span></p>
-          <button class="btn btn-lg btn-block btn-outline-dark" onclick="buyCourse('C Language', 2700)">Buy Now</button>
-          <a href="#" class="btn btn-outline-secondary btn-block mt-2">View Details</a>
-        </div>
-      </div>
+  <header>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <nav>
+        <span>DNYANSTACK</span>
+        <!-- <a href="#">About</a>
+        <a href="#">Mentors</a> -->
+      </nav>
     </div>
 
-    <!-- Course 2 -->
-    <div class="col-md-4 mb-4">
-      <div class="card h-100 shadow-sm">
-        <img src="images/webdev-devops.jpg" class="card-img-top" alt="HTML + CSS">
-        <div class="card-body">
-          <h5 class="card-title">HTML + CSS</h5>
-          <p class="card-text"><br>Syllabus: <a href="https://blog.100xdevs.com/" target="_blank"></a></p>
-          <p><del>₹2,499</del> <strong>₹1,599</strong> <span class="text-success">36.01% off</span></p>
-          <button class="btn btn-primary btn-block" onclick="buyCourse('HTML & CSS', 1599)">Buy Now</button>
-          <a href="#" class="btn btn-outline-secondary btn-block mt-2">View Details</a>
-        </div>
+    <div class="user-menu" id="userMenu">
+      <div style="display: flex; align-items: center;">
+        <div class="user-icon-circle"></div>
+        <span class="arrow" id="dropdownArrow">&#x25B2;</span>
+      </div>
+      <div class="dropdown" id="dropdownMenu">
+        <a href="#">Products</a>
+        <a href="#">Settings</a>
+        <a href="#" onclick="logout()">Logout</a>
       </div>
     </div>
+  </header>
+  <section id="courses" class="container my-5">
+    <h2 class="text-center mb-4">Courses</h2>
+    <p class="text-center">Simple and affordable price plans for you.</p>
 
-    <!-- Course 3 -->
-    <div class="col-md-4 mb-4">
-      <div class="card h-100 shadow-sm">
-        <img src="images/web3.jpg" class="card-img-top" alt="Math Python NMU">
-        <div class="card-body">
-          <h5 class="card-title">BSC MTH Python</h5>
-          <p class="card-text">Syllabus: <a href="https://blog.100xdevs.com/" target="_blank"></a></p>
-          <p><del>₹999</del> <strong>₹599</strong> <span class="text-success">40.04% off</span></p>
-          <button class="btn btn-primary btn-block" onclick="buyCourse('Web3 / Blockchain', 599)">Buy Now</button>
-          <a href="#" class="btn btn-outline-secondary btn-block mt-2">View Details</a>
+    <div class="row">
+
+      <!-- Course 1 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img src="images/devops-blockchain.jpg" class="card-img-top" alt="Full Stack Web Development - Advance Course">
+          <div class="card-body">
+            <h5 class="card-title">🧠 Frontend Ascend 2025:Beginner to Advanced Developer – Build Like a Pro</h5>
+            <p class="card-text">Syllabus: <a href="https://blog.100xdevs.com/" target="_blank"></a></p>
+            <p><del>₹12,599</del> <strong>₹10,499</strong> <span class="text-success">16.67% off</span></p>
+            <button class="btn btn-lg btn-block btn-outline-dark" onclick="buyCourse('C Language', 10499)" data-course="C Language">Buy Now</button>
+            <a href="ps5.html" class="btn btn-outline-secondary btn-block mt-2">View Details</a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Course 4 -->
-    <div class="col-md-4 mb-4">
-      <div class="card h-100 shadow-sm">
-        <img src="images/mern-devops.jpg" class="card-img-top" alt="MERN DevOps">
-        <div class="card-body">
-          <h5 class="card-title">MERN + DevOps + System Design</h5>
-          <p class="card-text">Open Source Projects + GSOC + Backend</p>
-          <p><del>₹6,999</del> <strong>₹4,899</strong> <span class="text-success">30% off</span></p>
-          <button class="btn btn-primary btn-block" onclick="buyCourse('MERN + DevOps + Design', 4899)">Buy Now</button>
-          <a href="#" class="btn btn-outline-secondary btn-block mt-2">View Details</a>
+      <!-- Course 2 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img src="images/webdev-devops.jpg" class="card-img-top" alt="HTML + CSS">
+          <div class="card-body">
+            <h5 class="card-title">HTML + CSS</h5>
+            <p class="card-text"><br>Syllabus: <a href="https://blog.100xdevs.com/" target="_blank"></a></p>
+            <p><del>₹2,499</del> <strong>₹1,599</strong> <span class="text-success">36.01% off</span></p>
+            <button class="btn btn-primary btn-block" onclick="buyCourse('HTML & CSS', 1599)" data-course="HTML & CSS">Buy Now</button>
+            <a href="ps7.html" class="btn btn-outline-secondary btn-block mt-2">View Details</a>
+          </div>
         </div>
       </div>
+
+      <!-- Course 3 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img src="images/web3.jpg" class="card-img-top" alt="Java Bootcamp: From Basics to Expert">
+          <div class="card-body">
+            <h5 class="card-title">Java Bootcamp: From Basics to Expert</h5>
+            <p class="card-text">Syllabus: <a href="https://blog.100xdevs.com/" target="_blank"></a></p>
+            <p><del>₹8,999</del> <strong>₹6,999</strong> <span class="text-success">36.01% off</span></p>
+            <button class="btn btn-primary btn-block" onclick="buyCourse('Java BootCamp', 6999)" data-course="Java BootCamp">Buy Now</button>
+            <a href="ps8.html" class="btn btn-outline-secondary btn-block mt-2">View Details</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course 4 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img src="images/mern-devops.jpg" class="card-img-top" alt="C++ Grandmastery">
+          <div class="card-body">
+            <h5 class="card-title">C++ Grandmastery: The Complete Beginner-to-Pro Real-World Course</h5>
+            <p class="card-text"></p>
+            <p><del>₹6,499</del> <strong>₹3,499</strong> <span class="text-success">53.85% off</span></p>
+            <button class="btn btn-primary btn-block" onclick="buyCourse('C++ Grandmastery', 3499)" data-course="C++ Grandmastery">Buy Now</button>
+            <a href="C++_Detail.html" class="btn btn-outline-secondary btn-block mt-2">View Details</a>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </section>
 
-  </div>
-</section>
+  <style>
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
 
-<!-- Add this to your CSS file (coding.css or inside <style>) -->
-<style>
-.card-img-top {
-  height: 200px;
-  object-fit: cover;
-}
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
 
-.card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
+    .card-text {
+      font-size: 0.95rem;
+    }
 
-.card-text {
-  font-size: 0.95rem;
-}
+    .card p {
+      margin-bottom: 0.5rem;
+    }
+  </style>
 
-.card p {
-  margin-bottom: 0.5rem;
-}
-</style>
+  <script>
+    function logout() {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("userEmail");
+      window.location.href = "index.html";
+    }
 
+    function redirectToCourse(course) {
+      if (course === "C Language") {
+        window.location.href = "frontend.html";
+      } else if (course === "HTML & CSS") {
+        window.location.href = "ps7.html";
+      } else if (course === "Java BootCamp") {
+        window.location.href = "javabootcamp.html";
+      } else if (course === "C++ Grandmastery") {
+        window.location.href = "C++_Course.html";
+      }
+    }
+
+    function buyCourse(course, amount) {
+      const userEmail = localStorage.getItem("userEmail");
+      if (!userEmail) {
+        alert("Please log in first.");
+        return;
+      }
+
+      var options = {
+        "key": "rzp_test_CWKpvdJclovfui",
+        "amount": amount * 100,
+        "currency": "INR",
+        "name": "Code With Kaustubh",
+        "description": `Payment for ${course}`,
+        "handler": function (response) {
+          alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+
+          let purchases = JSON.parse(localStorage.getItem("purchases")) || {};
+          if (!purchases[userEmail]) purchases[userEmail] = [];
+          if (!purchases[userEmail].includes(course)) purchases[userEmail].push(course);
+          localStorage.setItem("purchases", JSON.stringify(purchases));
+
+          redirectToCourse(course);
+        },
+        "prefill": {
+          "email": userEmail,
+          "contact": "9999999999"
+        },
+        "theme": {
+          "color": "#3399cc"
+        }
+      };
+
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    }
+
+    function updateCourseButtons() {
+      const userEmail = localStorage.getItem("userEmail");
+      const purchases = JSON.parse(localStorage.getItem("purchases")) || {};
+      const userCourses = purchases[userEmail] || [];
+
+      document.querySelectorAll("button[data-course]").forEach(btn => {
+        const course = btn.getAttribute("data-course");
+        if (userCourses.includes(course)) {
+          const continueBtn = document.createElement("button");
+          continueBtn.className = "btn btn-success btn-block";
+          continueBtn.innerText = "Continue";
+          continueBtn.onclick = () => redirectToCourse(course);
+          btn.replaceWith(continueBtn);
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", updateCourseButtons);
+  </script>
+
+
+  <script>
+    const userMenu = document.getElementById("userMenu");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const dropdownArrow = document.getElementById("dropdownArrow");
+
+    userMenu.addEventListener("click", () => {
+      dropdownMenu.classList.toggle("active");
+      dropdownArrow.classList.toggle("open");
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title> DnyanStack Course</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #fff;
+      padding: 20px 40px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    header nav {
+      display: flex;
+      gap: 20px;
+      font-weight: 500;
+    }
+
+    .user-menu {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .user-icon-circle {
+      background: #dbeafe;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-icon-circle::before {
+      content: "👤";
+      font-size: 18px;
+    }
+
+    .arrow {
+      display: inline-block;
+      margin-left: 6px;
+      font-size: 12px;
+      transition: transform 0.2s ease;
+    }
+
+    .arrow.open {
+      transform: rotate(180deg);
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 65px;
+      right: 40px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      width: 160px;
+      display: none;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    .dropdown.active {
+      display: flex;
+    }
+
+    .dropdown a {
+      padding: 12px 16px;
+      text-decoration: none;
+      color: #111827;
+      font-weight: 500;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .dropdown a:last-child {
+      border-bottom: none;
+      color: red;
+    }
+
+    .dropdown a:hover {
+      background: #f9fafb;
+    }
+
+    main {
+      display: flex;
+      flex: 1;
+    }
+
+    aside {
+      width: 320px;
+      background: #fff;
+      padding: 20px;
+      border-right: 1px solid #eee;
+      height: calc(100vh - 81px);
+      overflow-y: auto;
+    }
+
+    .course-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .chapter {
+      margin-bottom: 20px;
+    }
+
+    .chapter-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+
+    .lesson {
+      font-size: 14px;
+      padding: 6px 0;
+      cursor: pointer;
+      padding-left: 10px;
+      border-radius: 4px;
+      color: #444;
+    }
+
+    .lesson:hover {
+      background-color: #f1f1f1;
+    }
+
+    .lesson.active {
+      background-color: #dbeafe;
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+
+    .content-area {
+      flex: 1;
+      padding: 30px 40px;
+      background: #fff;
+    }
+
+    .breadcrumb {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 10px;
+    }
+
+    .lesson-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border: 0;
+    }
+
+    aside::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    aside::-webkit-scrollbar-thumb {
+      background-color: #ccc;
+      border-radius: 10px;
+    }
+
+.chapter-title .arrow {
+  transition: transform 0.2s ease;
+  font-size: 12px;
+  margin-right: 8px;
+}
+
+.chapter.open .arrow {
+  transform: rotate(90deg);
+}
+
+.chapter-lessons {
+  display: none;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+.chapter.open .chapter-lessons {
+  display: block;
+}
+
+    @media screen and (max-width: 768px) {
+      aside {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <nav>
+        <span>DNYANSTACK</span>
+        <!-- <a href="#">About</a>
+        <a href="#">Mentors</a> -->
+      </nav>
+    </div>
+
+    <div class="user-menu" id="userMenu">
+      <div style="display: flex; align-items: center;">
+        <div class="user-icon-circle"></div>
+        <span class="arrow" id="dropdownArrow">&#x25B2;</span>
+      </div>
+      <div class="dropdown" id="dropdownMenu">
+        <a href="#">Products</a>
+        <a href="#">Settings</a>
+        <a href="#" onclick="logout()">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <aside>
+      <div class="course-title">C++ Grandmastery: The Complete Beginner-to-Pro Real-World Course<br>
+        <!-- <small>✅ 2/149 completed</small> -->
+      </div>
+
+      <div class="chapter">
+        <div class="chapter-title" onclick="toggleChapter(this)">
+          Chapter - C++ Kickstart – Setup & First Win
+          <span class="arrow">&#9654;</span>
+        </div>
+        <div class="chapter-lessons">
+          <div class="lesson" data-title="What is C++, and why do big tech, gaming, finance, and systems love it?" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">What is C++, and why do big tech, gaming, finance, and systems love it?</div>
+          <div class="lesson" data-title="Install VS Code or use Online IDE (Replit / OnlineGDB)" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">Install VS Code or use Online IDE (Replit / OnlineGDB)</div>
+          <div class="lesson" data-title="Understand the compilation journey: From .cpp → .exe" data-video="https://www.youtube.com/embed/dD2EISBDjWM">Understand the compilation journey: From .cpp → .exe</div>
+          <div class="lesson" data-title="Write your first real project:" data-video="https://www.youtube.com/embed/pQN-pnXPaVg">Write your first real project:</div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <div class="chapter-title" onclick="toggleChapter(this)">
+          Chapter - 1.2
+          <span class="arrow">&#9654;</span>
+        </div>
+        
+        <div class="chapter-lessons">
+          <div class="lesson" data-title="What We Plan To Build" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">What We Plan To Build</div>
+          <div class="lesson" data-title="Complete Web Page" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">Complete Web Page</div>
+          <div class="lesson" data-title="Semantic vs Non semantic" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">Semantic vs Non semantic</div>
+        </div>
+      </div>
+      
+
+      <div class="chapter">
+        <div class="chapter-title" onclick="toggleChapter(this)">
+          Chapter - 1.3
+          <span class="arrow">&#9654;</span>
+        </div>
+        <div class="chapter-lessons">
+          <div class="lesson" data-title="Block vs Inline" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">Block vs Inline</div>
+          <div class="lesson" data-title="Adding Tables" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">Adding Tables</div>
+          <div class="lesson" data-title="More Attributes and tags related to the table" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">More Attributes and tags related to the table</div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <div class="chapter-title" onclick="toggleChapter(this)">
+          Chapter - 1.4
+          <span class="arrow">&#9654;</span>
+        </div>
+        <div class="chapter-lessons">
+          <div class="lesson" data-title="Creating a simple form" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">Creating a simple form</div>
+          <div class="lesson" data-title="More Input types" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">More Input types</div>
+          <div class="lesson" data-title="Radio button and checkbox" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">Radio button and checkbox</div>
+        </div>
+      </div>
+
+      <div class="chapter">
+        <div class="chapter-title" onclick="toggleChapter(this)">
+          Chapter - 1.5
+          <span class="arrow">&#9654;</span>
+        </div>
+        <div class="chapter-lessons">
+          <div class="lesson" data-title="Select, textarea and Button" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">Select, textarea and Button</div>
+          <div class="lesson" data-title="Form Attributes" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">Form Attributes</div>
+          <div class="lesson" data-title="Media tag" data-video="https://www.youtube.com/embed/ZnP1tq1eKnE">Media tag</div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="content-area">
+      <div class="breadcrumb">Products / Course / Section / Lesson</div>
+      <div class="lesson-title">Intro to HTML</div>
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/ZnP1tq1eKnE" allowfullscreen></iframe>
+      </div>
+    </section>
+  </main>
+  <script>
+    const lessons = document.querySelectorAll('.lesson');
+    const lessonTitle = document.querySelector('.lesson-title');
+    const lessonVideo = document.querySelector('.video-container iframe');
+  
+    // Function to load saved lesson from localStorage
+    function loadLastLesson() {
+      const savedLesson = JSON.parse(localStorage.getItem('lastLesson'));
+      if (savedLesson && savedLesson.title && savedLesson.video) {
+        lessonTitle.textContent = savedLesson.title;
+        lessonVideo.src = savedLesson.video;
+  
+        // Highlight the matching lesson
+        lessons.forEach(lesson => {
+          if (
+            lesson.getAttribute('data-title') === savedLesson.title &&
+            lesson.getAttribute('data-video') === savedLesson.video
+          ) {
+            lesson.classList.add('active');
+            const chapter = lesson.closest('.chapter');
+            chapter.classList.add('open'); // open the chapter if not already open
+          }
+        });
+      }
+    }
+  
+    // Run when user clicks on a lesson
+    lessons.forEach(lesson => {
+      lesson.addEventListener('click', () => {
+        lessons.forEach(l => l.classList.remove('active'));
+        lesson.classList.add('active');
+  
+        const title = lesson.getAttribute('data-title');
+        const video = lesson.getAttribute('data-video');
+  
+        if (title && video) {
+          lessonTitle.textContent = title;
+          lessonVideo.src = video;
+  
+          // Save to localStorage
+          localStorage.setItem('lastLesson', JSON.stringify({ title, video }));
+        } else {
+          lessonTitle.textContent = 'Coming Soon';
+          lessonVideo.src = '';
+          localStorage.removeItem('lastLesson');
+        }
+      });
+    });
+  
+    // Load the last viewed lesson on page load
+    loadLastLesson();
+  </script>
+  
+  <script>
+    const userMenu = document.getElementById("userMenu");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const dropdownArrow = document.getElementById("dropdownArrow");
+
+    userMenu.addEventListener("click", () => {
+      dropdownMenu.classList.toggle("active");
+      dropdownArrow.classList.toggle("open");
+    });
+
+    function logout() {
+      alert("You have been logged out.");
+      // Redirect to your logout URL
+      window.location.href = "../coding.html"; // Change this to your real logout URL
+    }
+  </script>
+
+
+  
+  <script>
+    function toggleChapter(el) {
+      const chapter = el.parentElement;
+      chapter.classList.toggle('open');
+    }
+  </script>
+  
+</body>
+</html>

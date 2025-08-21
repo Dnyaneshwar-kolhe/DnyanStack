@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DnyanStack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #f7fbff, #ffffff);
+      color: #222;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #tsparticles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .mobile-menu-icon {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      color: #1565c0;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      z-index: 1001;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
+      min-height: 100vh;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      border-right: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 2px 0 20px rgba(0, 0, 0, 0.05);
+      transition: left 0.3s ease;
+    }
+
+    .sidebar img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 30px;
+      align-self: center;
+    }
+    .sidebar a{
+        color: black;
+        text-decoration: none;
+    }
+    .menu-label {
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      color: #444;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .menu-item:hover {
+      color: #1565c0;
+      transform: scale(1.03);
+    }
+
+    .menu-item i {
+      font-size: 20px;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      flex: 1;
+      padding: 40px 30px;
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #c5d5e6, #ffffff);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .left-section {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .left-section h1 {
+      font-size: 38px;
+      font-weight: 800;
+      color: #0d47a1;
+      line-height: 1.4;
+    }
+
+    .overview {
+      margin-top: 30px;
+    }
+
+    .overview h3 {
+      color: #0d47a1;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .overview a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    .overview a:hover {
+      text-decoration: underline;
+    }
+
+    .price-card {
+      background: rgba(255,255,255,0.95);
+      border: 1px solid #dceeff;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+    }
+
+    .price-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .price {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1b5e20;
+    }
+
+    .original-price {
+      text-decoration: line-through;
+      color: #999;
+      font-weight: 500;
+      margin-left: 10px;
+    }
+
+    .discount {
+      color: green;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    .currency {
+      margin: 12px 0;
+      font-size: 15px;
+      color: #555;
+    }
+
+    .btn {
+      background: linear-gradient(to right, #42a5f5, #1e88e5);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+      width: 100%;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(30, 136, 229, 0.3);
+    }
+
+    .btn:hover {
+      transform: scale(1.07);
+      background: linear-gradient(to right, #64b5f6, #1976d2);
+    }
+
+    .countdown {
+      background-color: #fffde7;
+      border: 2px dashed #fdd835;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 50px auto;
+      font-size: 18px;
+      color: #e65100;
+      font-weight: 600;
+      max-width: 500px;
+    }
+
+    .badge {
+      display: block;
+      background-color: #43a047;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 16px;
+      margin: 30px auto;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .syllabus-section {
+      margin-top: 60px;
+    }
+
+    .syllabus-section h2 {
+      margin-bottom: 25px;
+      color: #0d47a1;
+      font-size: 26px;
+      text-align: center;
+    }
+
+    .syllabus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      border: 2px solid #cde0f7;
+      border-radius: 12px;
+      padding: 20px;
+      background-color: #fdfdff;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: #1e88e5;
+      box-shadow: 0 16px 32px rgba(30, 136, 229, 0.15);
+    }
+
+    .card h3 {
+      background-color: #1e88e5;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 18px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .card ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+
+    .card ul li {
+      margin-bottom: 10px;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-icon {
+        display: block;
+      }
+      .sidebar {
+        left: -260px;
+      }
+      .sidebar.active {
+        left: 0;
+        display: flex;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+      .container {
+        flex-direction: column;
+        gap: 30px;
+      }
+      .price-card {
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="tsparticles"></div>
+  <div class="mobile-menu-icon" onclick="toggleSidebar()">
+    <i class="fas fa-bars" id="menu-icon"></i>
+  </div>
+  <div class="sidebar">
+    <img src="images/kkprofile.jpg" alt="Profile" />
+    <div class="menu-label">Main Menu</div>
+    <div class="menu-item"><i class="fas fa-home"></i><a href="index.html">Home</a></div>
+    <div class="menu-item"><i class="fas fa-graduation-cap"></i><a href="coding.html">Courses</a></div>
+  </div>
+  <div class="main-content">
+    <!-- ...rest of your content remains unchanged... -->
+    <div class="container">
+        <div class="left-section">
+          <h1>🧠 C++ Grandmastery: The Complete Beginner-to-Pro Real-World Course<br></h1>
+          <div class="overview">
+            <h3>"Learn frontend not just to code — but to think, solve, and deliver like a top 1% engineer."</h3>
+            <p><strong>Description:</strong><br>
+              Complete syllabus – <a href="" target="_blank"></a>
+            </p>
+            <p style="margin-top:10px;"><strong></strong></p>
+          </div>
+        </div>
+  
+        <div class="price-card">
+          <img src="https://i.imgur.com/97kJZzo.png" alt="C++ Grandmastery" />
+          <div class="price">₹3,499<span class="original-price">₹6,499</span></div>
+          <div class="discount">53.85% off</div> 
+          <button class="btn btn-lg btn-block btn-outline-dark" onclick="buyCourse('C++ Grandmastery', 3499)" data-course="C++ Grandmastery">Buy Now</button>
+        </div>
+      </div>
+  
+      <div class="countdown" id="countdown">
+        ⏳ Enrollment closes in: <span id="time"></span>
+      </div>
+  
+      <!-- <div class="badge">
+        🎖️ Certificate of Completion Available After Course!
+      </div> -->
+  
+      <div class="syllabus-section">
+        <h2>Syllabus</h2>
+        <div class="syllabus-grid">
+          <div class="card"><h3>🔷  C++ Kickstart – Setup & First Win</h3>
+          <ul>
+            <li>What is C++, and why do big tech, gaming, finance, and systems love it?</li>
+            <li>Install VS Code or use Online IDE (Replit / OnlineGDB)</li>
+            <li>Understand the compilation journey: From .cpp → .exe</li>
+            <li>Write your first real project:</li>
+            <li>🛠️ Project: ✅ Print your profile <br>✅ Take input & print a personalized result <br>✅ Build a terminal-based calculator</li>
+          </ul>
+        </div>
+          <div class="card"><h3>🔷  Think Like a Programmer – Not a Typist</h3>
+            <ul>
+              <li>How code flows: Input → Processing → Output</li>
+              <li>Pseudocode & logic trees</li>
+              <li>Visual dry runs and memory diagrams</li>
+              <li>Boolean thinking: 0s, 1s, conditions</li>
+              <li>🛠️ Mini Project:  Logic-based Quiz Game</li>
+            </ul>
+          </div>
+          <div class="card"><h3>🔷Variables, Data & Decisions</h3>
+            <ul>
+              <li>Variables & Data Types (int, float, char, string, bool)</li>
+              <li>Operators (+, -, ==, !=, &&, etc.)</li>
+              <li>Typecasting & conversions</li>
+              <li>Control structures: if, else, else if, switch</li>
+              <li>🛠️ Project: BMI Calculator & Health Tips</li>
+            </ul>
+          </div>
+          <div class="card"><h3>🔷 Loops – Repeat with Power</h3>
+            <ul>
+              <li>for, while, do-while — explained visually</li>
+              <li>Nested loops & loop counters</li>
+              <li>Break & continue</li>
+              <li>Pattern printing</li>
+              <li>Logic puzzles using loops</li>
+              <li>🛠️ Project: Time-Based Alarm Clock & Pattern Renderer</li>
+            </ul>
+          </div>
+          <div class="card"><h3>🔷  Arrays, Strings & Data Management</h3>
+            <ul>
+              <li>Arrays: 1D and 2D</li>
+              <li>Iterating and sorting arrays</li>
+              <li>Intro to string as a class</li>
+              <li>Basic string operations: reverse, palindrome, frequency counter</li>
+              <li>Character-level logic</li>
+              <li>🛠️ Project: Word Analyzer Tool (counts vowels, reverses, checks anagram)</li>
+            </ul>
+          </div>
+          <div class="card"><h3>🔷 Functions & Problem Decomposition</h3>
+            <ul>
+              <li>Defining & calling functions</li>
+              <li>Parameters, return values</li>
+              <li>Pass-by-value vs pass-by-reference</li>
+              <li>Function overloading</li>
+              <li>Recursion basics with animations</li>
+              <li>🛠️ Project:  Build a Math Library with custom functions (factorial, prime, fib, power)</li>
+            </ul>
+          </div>
+          <div class="card"><h3>🔷  Mastering Object-Oriented Programming (OOP)</h3>
+            <ul>
+              <li>Classes & objects (real-world analogies)</li>
+              <li>Access specifiers (public, private)</li>
+              <li>Constructors & destructors</li>
+              <li>this pointer</li>
+              <li>Inheritance & types of inheritance</li>
+              <li>Polymorphism (compile-time & run-time)</li>
+              <li>Virtual functions</li>
+              <li>🛠️ Project: Student Report Card System using OOP</li>
+            </ul>
+          </div>
+          <div class="card"><h3>🔷 File Handling & Data Persistence</h3>
+            <ul>
+              <li>Reading/writing text files</li>
+              <li>Append, overwrite, read line-by-line</li>
+              <li>Storing user input into a file</li>
+              <li>Simple encryption & parsing</li>
+              <li>🛠️ Project:Digital Diary App (file-based CRUD)</li>
+            </ul>
+          </div>
+          <div class="card"><h3>🔷 STL – Standard Template Library</h3>
+            <ul>
+                <li>What is STL? Why use it?</li>
+                <li>Vectors, Lists, Sets, Maps</li>
+                <li>pair, stack, queue, priority_queue</li>
+                <li>Iterators</li>
+                <li>sort(), count(), find(), binary_search()</li>
+                <li>Lambda functions (intro)</li>
+                <li>🛠️ Project: Build a To-Do List Manager using STL</li>
+              </ul>
+          </div>
+          <div class="card"><h3>🔷 Basics of Memory & Debugging</h3>
+            <ul>
+                <li>Stack vs Heap</li>
+                <li>Memory leaks</li>
+                <li>new, delete</li>
+                <li>Pointers & pointer arithmetic</li>
+                <li>Debugging with gdb / breakpoints</li>
+                <li>Fixing runtime errors</li>
+                <li>🛠️ Project: Memory Puzzle Game using pointers</li>
+              </ul>
+          </div>
+          <div class="card"><h3>🔷 Modern C++ Features (C++11, 14, 17, 20)</h3>
+            <ul>
+                <li>Smart pointers (unique_ptr, shared_ptr)</li>
+                <li>Auto keyword</li>
+                <li>Range-based loops</li>
+                <li>nullptr, enum class, constexpr</li>
+                <li>Structured bindings</li>
+                <li>Concepts (C++20 intro)</li>
+                <li>Real-world relevance of these features</li>
+                <li>🛠️ Project: Mini Chat System using smart pointers & modern syntax</li>
+              </ul>
+          </div>
+          <div class="card"><h3>🔷 🏆 Real-World Dev Simulation (Capstone)</h3>
+            <ul>
+              <li>Bank Management System (OOP + Files + STL)</li>
+              <li>Task Tracker App (CRUD + File Handling + STL)</li>
+              <li>Mini E-commerce CLI System (Inventory + Cart + Order History)</li>
+              <li>Terminal Quiz Game with Leaderboard (Files + Classes + Loops)</li>
+            </ul>
+          </div>
+          <!-- <div class="card"><h3>🔷  AI-Powered Frontend — Build 2x Faster</h3>
+            <ul>
+              <li>GitHub Copilot + ChatGPT for coding, scaffolding, refactoring</li>
+              <li>Prompt engineering: generate code, a11y fixes, documentation</li>
+              <li>Figma → Code: AI tools like Locofy, Vercel v0 to generate component-ready output</li>
+              <li>📦 Project: AI-generated landing page, polished for accessibility and handoff</li>
+            </ul>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const icon = document.getElementById('menu-icon');
+      sidebar.classList.toggle('active');
+      if (sidebar.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    }
+  </script>
+
+    <!-- Countdown Script -->
+    <script>
+        const endDate = new Date("August 2, 2024 23:59:59").getTime();
+        const timeDisplay = document.getElementById("time");
+        function updateCountdown() {
+          const now = new Date().getTime();
+          const timeLeft = endDate - now;
+          if (timeLeft <= 0) {
+            timeDisplay.innerText = "Enrollment Closed!";
+            return;
+          }
+          const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+          timeDisplay.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+      </script>
+    
+      <!-- tsParticles Background -->
+      <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+      <script>
+        tsParticles.load("tsparticles", {
+          fullScreen: { enable: true, zIndex: -1 },
+          particles: {
+            number: { value: 45 },
+            color: { value: "#1e88e5" },
+            shape: { type: "circle" },
+            opacity: { value: 0.5 },
+            size: { value: 3 },
+            move: { enable: true, speed: 1 },
+            links: {
+              enable: true,
+              distance: 120,
+              color: "#90caf9",
+              opacity: 0.4,
+              width: 1
+            }
+          },
+          background: { color: "#ffffff" }
+        });
+      </script>
+
+<script>
+    function logout() {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("userEmail");
+      window.location.href = "index.html";
+    }
+
+    function redirectToCourse(course) {
+      if (course === "C Language") {
+        window.location.href = "frontend.html";
+      } else if (course === "HTML & CSS") {
+        window.location.href = "ps.html";
+      } else if (course === "Web3 / Blockchain") {
+        window.location.href = "web3.html";
+      } else if (course === "C++ Grandmastery") {
+        window.location.href = "C++_Course.html";
+      }
+    }
+
+    function buyCourse(course, amount) {
+      const userEmail = localStorage.getItem("userEmail");
+      if (!userEmail) {
+        alert("Please log in first.");
+        return;
+      }
+
+      var options = {
+        "key": "rzp_test_CWKpvdJclovfui",
+        "amount": amount * 100,
+        "currency": "INR",
+        "name": "Code With Kaustubh",
+        "description": `Payment for ${course}`,
+        "handler": function (response) {
+          alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+
+          let purchases = JSON.parse(localStorage.getItem("purchases")) || {};
+          if (!purchases[userEmail]) purchases[userEmail] = [];
+          if (!purchases[userEmail].includes(course)) purchases[userEmail].push(course);
+          localStorage.setItem("purchases", JSON.stringify(purchases));
+
+          redirectToCourse(course);
+        },
+        "prefill": {
+          "email": userEmail,
+          "contact": "9999999999"
+        },
+        "theme": {
+          "color": "#3399cc"
+        }
+      };
+
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    }
+
+    function updateCourseButtons() {
+      const userEmail = localStorage.getItem("userEmail");
+      const purchases = JSON.parse(localStorage.getItem("purchases")) || {};
+      const userCourses = purchases[userEmail] || [];
+
+      document.querySelectorAll("button[data-course]").forEach(btn => {
+        const course = btn.getAttribute("data-course");
+        if (userCourses.includes(course)) {
+          const continueBtn = document.createElement("button");
+          continueBtn.className = "btn btn-success btn-block";
+          continueBtn.innerText = "Continue";
+          continueBtn.onclick = () => redirectToCourse(course);
+          btn.replaceWith(continueBtn);
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", updateCourseButtons);
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DnyanStack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #f7fbff, #ffffff);
+      color: #222;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #tsparticles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .mobile-menu-icon {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      color: #1565c0;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      z-index: 1001;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
+      min-height: 100vh;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      border-right: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 2px 0 20px rgba(0, 0, 0, 0.05);
+      transition: left 0.3s ease;
+    }
+
+    .sidebar img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 30px;
+      align-self: center;
+    }
+    .sidebar a{
+        color: black;
+        text-decoration: none;
+    }
+    .menu-label {
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      color: #444;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .menu-item:hover {
+      color: #1565c0;
+      transform: scale(1.03);
+    }
+
+    .menu-item i {
+      font-size: 20px;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      flex: 1;
+      padding: 40px 30px;
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #c5d5e6, #ffffff);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .left-section {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .left-section h1 {
+      font-size: 38px;
+      font-weight: 800;
+      color: #0d47a1;
+      line-height: 1.4;
+    }
+
+    .overview {
+      margin-top: 30px;
+    }
+
+    .overview h3 {
+      color: #0d47a1;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .overview a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    .overview a:hover {
+      text-decoration: underline;
+    }
+
+    .price-card {
+      background: rgba(255,255,255,0.95);
+      border: 1px solid #dceeff;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+    }
+
+    .price-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .price {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1b5e20;
+    }
+
+    .original-price {
+      text-decoration: line-through;
+      color: #999;
+      font-weight: 500;
+      margin-left: 10px;
+    }
+
+    .discount {
+      color: green;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    .currency {
+      margin: 12px 0;
+      font-size: 15px;
+      color: #555;
+    }
+
+    .btn {
+      background: linear-gradient(to right, #42a5f5, #1e88e5);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+      width: 100%;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(30, 136, 229, 0.3);
+    }
+
+    .btn:hover {
+      transform: scale(1.07);
+      background: linear-gradient(to right, #64b5f6, #1976d2);
+    }
+
+    .countdown {
+      background-color: #fffde7;
+      border: 2px dashed #fdd835;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 50px auto;
+      font-size: 18px;
+      color: #e65100;
+      font-weight: 600;
+      max-width: 500px;
+    }
+
+    .badge {
+      display: block;
+      background-color: #43a047;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 16px;
+      margin: 30px auto;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .syllabus-section {
+      margin-top: 60px;
+    }
+
+    .syllabus-section h2 {
+      margin-bottom: 25px;
+      color: #0d47a1;
+      font-size: 26px;
+      text-align: center;
+    }
+
+    .syllabus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      border: 2px solid #cde0f7;
+      border-radius: 12px;
+      padding: 20px;
+      background-color: #fdfdff;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: #1e88e5;
+      box-shadow: 0 16px 32px rgba(30, 136, 229, 0.15);
+    }
+
+    .card h3 {
+      background-color: #1e88e5;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 18px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .card ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+
+    .card ul li {
+      margin-bottom: 10px;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-icon {
+        display: block;
+      }
+      .sidebar {
+        left: -260px;
+      }
+      .sidebar.active {
+        left: 0;
+        display: flex;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+      .container {
+        flex-direction: column;
+        gap: 30px;
+      }
+      .price-card {
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="tsparticles"></div>
+  <div class="mobile-menu-icon" onclick="toggleSidebar()">
+    <i class="fas fa-bars" id="menu-icon"></i>
+  </div>
+  <div class="sidebar">
+    <img src="images/kkprofile.jpg" alt="Profile" />
+    <div class="menu-label">Main Menu</div>
+    <div class="menu-item"><i class="fas fa-home"></i><a href="index.html">Home</a></div>
+    <div class="menu-item"><i class="fas fa-graduation-cap"></i><a href="coding.html">Courses</a></div>
+  </div>
+  <div class="main-content"> -->
+    <!-- ...rest of your content remains unchanged... -->
+    <!-- <div class="container">
+        <div class="left-section">
+          <h1>Complete <br>Front End-Development<br></h1>
+          <div class="overview">
+            <h3>Overview</h3>
+            <p><strong>Description:</strong><br>
+              Complete syllabus – <a href="" target="_blank"></a>
+            </p>
+            <p style="margin-top:10px;"><strong></strong></p>
+          </div>
+        </div>
+  
+        <div class="price-card">
+          <img src="https://i.imgur.com/97kJZzo.png" alt="Front-End Development" />
+          <div class="price">₹10,499<span class="original-price">₹12,599</span></div>
+          <div class="discount">16.67% off</div> 
+          <button class="btn btn-lg btn-block btn-outline-dark" onclick="buyCourse('C Language', 10499)" data-course="C Language">Buy Now</button>
+        </div>
+      </div>
+  
+      <div class="countdown" id="countdown">
+        ⏳ Enrollment closes in: <span id="time"></span>
+      </div> -->
+  
+      <!-- <div class="badge">
+        🎖️ Certificate of Completion Available After Course!
+      </div> -->
+  
+      <!-- <div class="syllabus-section">
+        <h2>Syllabus</h2>
+        <div class="syllabus-grid">
+          <div class="card"><h3>🔷 FRONTEND</h3><ul><li>Pure frontend TODO app using DOM Manipulation</li><li>Gmail clone</li></ul></div>
+          <div class="card"><h3>🔷 FULLSTACK</h3><ul><li>Excalidraw</li><li>Build a chat app (simple)</li><li>Realtime game (chess/ludo)</li><li>Building codeforces/leetcode</li><li>Scale your realtime app</li></ul></div>
+          <div class="card"><h3>🔷 WEB3 BASIC</h3><ul><li>Create a client-side wallet in JS</li><li>Token launch and transfer on Solana</li><li>Create a cloud wallet in Node.js</li></ul></div>
+          <div class="card"><h3>🔷 WEB3 ADVANCE</h3><ul><li>Crypto payment gateway (Web3 Stripe)</li><li>Centralized crypto exchange</li></ul></div>
+          <div class="card"><h3>🔷 ETH CONTRACTS</h3><ul><li>ERC20, ERC721</li><li>Custom Solidity smart contracts</li></ul></div>
+          <div class="card"><h3>🔷 SOL PROGRAMS</h3><ul><li>Token program</li><li>Transfer, Mint, Burn</li><li>Basic DeFi logic in Solana</li></ul></div>
+        </div>
+      </div>
+    </div>
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const icon = document.getElementById('menu-icon');
+      sidebar.classList.toggle('active');
+      if (sidebar.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    }
+  </script> -->
+
+    <!-- Countdown Script -->
+    <!-- <script>
+        const endDate = new Date("August 2, 2024 23:59:59").getTime();
+        const timeDisplay = document.getElementById("time");
+        function updateCountdown() {
+          const now = new Date().getTime();
+          const timeLeft = endDate - now;
+          if (timeLeft <= 0) {
+            timeDisplay.innerText = "Enrollment Closed!";
+            return;
+          }
+          const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+          timeDisplay.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+      </script> -->
+    
+      <!-- tsParticles Background -->
+      <!-- <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+      <script>
+        tsParticles.load("tsparticles", {
+          fullScreen: { enable: true, zIndex: -1 },
+          particles: {
+            number: { value: 45 },
+            color: { value: "#1e88e5" },
+            shape: { type: "circle" },
+            opacity: { value: 0.5 },
+            size: { value: 3 },
+            move: { enable: true, speed: 1 },
+            links: {
+              enable: true,
+              distance: 120,
+              color: "#90caf9",
+              opacity: 0.4,
+              width: 1
+            }
+          },
+          background: { color: "#ffffff" }
+        });
+      </script>
+
+<script>
+    function logout() {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("userEmail");
+      window.location.href = "index.html";
+    }
+
+    function redirectToCourse(course) {
+      if (course === "C Language") {
+        window.location.href = "c-lang.html";
+      } else if (course === "HTML & CSS") {
+        window.location.href = "ps.html";
+      } else if (course === "Web3 / Blockchain") {
+        window.location.href = "web3.html";
+      } else if (course === "MERN + DevOps + Design") {
+        window.location.href = "mern.html";
+      }
+    }
+
+    function buyCourse(course, amount) {
+      const userEmail = localStorage.getItem("userEmail");
+      if (!userEmail) {
+        alert("Please log in first.");
+        return;
+      }
+
+      var options = {
+        "key": "rzp_test_CWKpvdJclovfui",
+        "amount": amount * 100,
+        "currency": "INR",
+        "name": "Code With Kaustubh",
+        "description": `Payment for ${course}`,
+        "handler": function (response) {
+          alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+
+          let purchases = JSON.parse(localStorage.getItem("purchases")) || {};
+          if (!purchases[userEmail]) purchases[userEmail] = [];
+          if (!purchases[userEmail].includes(course)) purchases[userEmail].push(course);
+          localStorage.setItem("purchases", JSON.stringify(purchases));
+
+          redirectToCourse(course);
+        },
+        "prefill": {
+          "email": userEmail,
+          "contact": "9999999999"
+        },
+        "theme": {
+          "color": "#3399cc"
+        }
+      };
+
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    }
+
+    function updateCourseButtons() {
+      const userEmail = localStorage.getItem("userEmail");
+      const purchases = JSON.parse(localStorage.getItem("purchases")) || {};
+      const userCourses = purchases[userEmail] || [];
+
+      document.querySelectorAll("button[data-course]").forEach(btn => {
+        const course = btn.getAttribute("data-course");
+        if (userCourses.includes(course)) {
+          const continueBtn = document.createElement("button");
+          continueBtn.className = "btn btn-success btn-block";
+          continueBtn.innerText = "Continue";
+          continueBtn.onclick = () => redirectToCourse(course);
+          btn.replaceWith(continueBtn);
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", updateCourseButtons);
+  </script>
+</body>
+</html> -->

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DnyanStack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #f7fbff, #ffffff);
+      color: #222;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    #tsparticles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .mobile-menu-icon {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      color: #1565c0;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      z-index: 1001;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
+      min-height: 100vh;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      border-right: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 2px 0 20px rgba(0, 0, 0, 0.05);
+      transition: left 0.3s ease;
+    }
+
+    .sidebar img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 30px;
+      align-self: center;
+    }
+    .sidebar a{
+        color: black;
+        text-decoration: none;
+    }
+    .menu-label {
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      color: #444;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .menu-item:hover {
+      color: #1565c0;
+      transform: scale(1.03);
+    }
+
+    .menu-item i {
+      font-size: 20px;
+    }
+
+    .main-content {
+      margin-left: 240px;
+      flex: 1;
+      padding: 40px 30px;
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #c5d5e6, #ffffff);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .left-section {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .left-section h1 {
+      font-size: 38px;
+      font-weight: 800;
+      color: #0d47a1;
+      line-height: 1.4;
+    }
+
+    .overview {
+      margin-top: 30px;
+    }
+
+    .overview h3 {
+      color: #0d47a1;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .overview a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    .overview a:hover {
+      text-decoration: underline;
+    }
+
+    .price-card {
+      background: rgba(255,255,255,0.95);
+      border: 1px solid #dceeff;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+    }
+
+    .price-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .price {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1b5e20;
+    }
+
+    .original-price {
+      text-decoration: line-through;
+      color: #999;
+      font-weight: 500;
+      margin-left: 10px;
+    }
+
+    .discount {
+      color: green;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+
+    .currency {
+      margin: 12px 0;
+      font-size: 15px;
+      color: #555;
+    }
+
+    .btn {
+      background: linear-gradient(to right, #42a5f5, #1e88e5);
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+      width: 100%;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 14px rgba(30, 136, 229, 0.3);
+    }
+
+    .btn:hover {
+      transform: scale(1.07);
+      background: linear-gradient(to right, #64b5f6, #1976d2);
+    }
+
+    .countdown {
+      background-color: #fffde7;
+      border: 2px dashed #fdd835;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 50px auto;
+      font-size: 18px;
+      color: #e65100;
+      font-weight: 600;
+      max-width: 500px;
+    }
+
+    .badge {
+      display: block;
+      background-color: #43a047;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 16px;
+      margin: 30px auto;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .syllabus-section {
+      margin-top: 60px;
+    }
+
+    .syllabus-section h2 {
+      margin-bottom: 25px;
+      color: #0d47a1;
+      font-size: 26px;
+      text-align: center;
+    }
+
+    .syllabus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      border: 2px solid #cde0f7;
+      border-radius: 12px;
+      padding: 20px;
+      background-color: #fdfdff;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: #1e88e5;
+      box-shadow: 0 16px 32px rgba(30, 136, 229, 0.15);
+    }
+
+    .card h3 {
+      background-color: #1e88e5;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 18px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .card ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+
+    .card ul li {
+      margin-bottom: 10px;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-icon {
+        display: block;
+      }
+      .sidebar {
+        left: -260px;
+      }
+      .sidebar.active {
+        left: 0;
+        display: flex;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+      .container {
+        flex-direction: column;
+        gap: 30px;
+      }
+      .price-card {
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="tsparticles"></div>
+  <div class="mobile-menu-icon" onclick="toggleSidebar()">
+    <i class="fas fa-bars" id="menu-icon"></i>
+  </div>
+  <div class="sidebar">
+    <img src="images/kkprofile.jpg" alt="Profile" />
+    <div class="menu-label">Main Menu</div>
+    <div class="menu-item"><i class="fas fa-home"></i><a href="index.html">Home</a></div>
+    <div class="menu-item"><i class="fas fa-graduation-cap"></i><a href="coding.html">Courses</a></div>
+  </div>
+  <div class="main-content">
+    <!-- ...rest of your content remains unchanged... -->
+    <div class="container">
+        <div class="left-section">
+          <h1>Java<br>Bootcamp: From Basics to Expert</h1>
+          <div class="overview">
+            <h3>Overview</h3>
+            <p><strong>Description:</strong><br>
+              Complete syllabus – <a href="" target="_blank"></a>
+            </p>
+            <p style="margin-top:10px;"><strong></strong></p>
+          </div>
+        </div>
+  
+        <div class="price-card">
+          <img src="https://i.imgur.com/97kJZzo.png" alt="Java Bootcamp: From Basics to Expert" />
+          <div class="price">₹6,999<span class="original-price">₹8,999</span></div>
+          <div class="discount">36.01% off</div> 
+          <button class="btn btn-lg btn-block btn-outline-dark" onclick="buyCourse('Java BootCamp', 6999)" data-course="Java BootCamp">Buy Now</button>
+        </div>
+      </div>
+  
+      <div class="countdown" id="countdown">
+        ⏳ Enrollment closes in: <span id="time"></span>
+      </div>
+  
+      <!-- <div class="badge">
+        🎖️ Certificate of Completion Available After Course!
+      </div> -->
+      <div class="syllabus-section">
+        <h2>Syllabus</h2>
+        <div class="syllabus-grid">
+          <div class="card"><h3>🔷 Introduction to Java & Setup</h3><ul><li>What is Java? Why Java in 2025?</li><li>Java Editions: SE, EE, ME</li><li>Installing JDK and IntelliJ/Eclipse</li><li>First Java Program & Compiler Workflow</li><li>Variables, Data Types, and Operators</li><li>Input/Output (Scanner, System.in/out)</li><li>🎯 Mini Project: Build a CLI Calculator</li></ul></div>
+          <div class="card"><h3>🔷  Control Flow & Logic Building</h3><ul><li>If-else, switch-case</li> <li>Loops: for, while, do-while</li><li>Break, continue, and nested loops</li><li>Logical Thinking and Problem Solving</li><li>🎯 Mini Project: ATM Machine Console App</li></ul></div>
+          <div class="card"><h3>🔷 Object-Oriented Programming (OOP)</h3><ul><li>Classes, Objects, and Methods</li><li>Constructors and Overloading</li><li>Inheritance, Polymorphism</li><li>Abstraction and Interfaces</li><li>Encapsulation and Access Modifiers</li><li>Static Keyword and Method Overriding</li><li>🎯 Mini Project: Banking System with OOP Concepts</li></ul></div> 
+          <div class="card"><h3>🔷 Arrays, Strings & Collections Framework</h3><ul><li>1D and 2D Arrays, Sorting & Searching</li><li>Java String Handling and Immutability</li><li>Wrapper Classes & Autoboxing</li><li>ArrayList, LinkedList, HashSet, HashMap</li><li>Iterators, forEach, and Lambda Expressions</li><li>🎯 Mini Project: Student Record System (with Collections)</li></ul></div>
+          <div class="card"><h3>🔷Exception Handling & File I/O</h3><ul><li>Try-catch-finally, throws, throw</li><li>Custom Exceptions</li><li>FileReader, BufferedReader, FileWriter</li><li>Serialization & Deserialization</li><li>🎯 Mini Project: File-based To-Do List App</li></ul></div>
+          <div class="card"><h3>🔷 JDBC – Java Database Connectivity</h3><ul><li>Introduction to MySQL & Database Design</li><li>CRUD Operations with JDBC</li><li>PreparedStatement, Transactions</li><li>Connection Pooling & JDBC Best Practices</li><li>🎯 Mini Project: Inventory Management System with MySQL</li></ul></div> 
+          <div class="card"><h3>🔷  Web Development with Spring Boot</h3><ul><li>Spring vs Spring Boot Overview</li><li>Creating First Spring Boot App</li><li>REST API Development with Controllers</li><li>Dependency Injection, Beans, Autowiring</li><li>Connecting Spring Boot with MySQL</li><li>🎯 Mini Project: Employee Management REST API</li></ul></div>
+          <div class="card"><h3>🔷  Hibernate & ORM</h3><ul><li>Introduction to ORM & Hibernate</li>Entity Mapping (OneToOne, OneToMany)</li><li>Hibernate Annotations</li><li>Lazy vs Eager Loading</li><li>Hibernate Query Language (HQL)</li><li>🎯 Mini Project: Online Course Enrollment System</li></ul></div> 
+          <div class="card"><h3>🔷  Advanced Topics</h3><ul><li>RESTful API Best Practices</li><li>Exception Handling in REST APIs</li><li>Swagger API Documentation</li><li>DTOs & Model Mapping</li><li>Java 8+ Features (Streams, Lambdas)</li><li>Intro to Git & GitHub</li><li>🎯 Mini Project: Blog API with Swagger and CRUD</li></ul></div>
+          <div class="card"><h3>🏆 Final Project + Deployment</h3><ul><li>Capstone Project: "Online Bookstore Web App"</li><li>User Signup/Login (Spring Security Intro)</li><li>Admin & User Roles</li><li>Product Listing, Cart, Orders</li><li>API Integration, Validation</li><li>Deploying on Render/Heroku</li><li>Resume Tips + GitHub Project Upload</li></ul></div>
+        </div>
+      </div>
+    </div>
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const icon = document.getElementById('menu-icon');
+      sidebar.classList.toggle('active');
+      if (sidebar.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    }
+  </script>
+
+    <!-- Countdown Script -->
+    <script>
+        const endDate = new Date("August 2, 2024 23:59:59").getTime();
+        const timeDisplay = document.getElementById("time");
+        function updateCountdown() {
+          const now = new Date().getTime();
+          const timeLeft = endDate - now;
+          if (timeLeft <= 0) {
+            timeDisplay.innerText = "Enrollment Closed!";
+            return;
+          }
+          const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+          timeDisplay.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+      </script>
+    
+      <!-- tsParticles Background -->
+      <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+      <script>
+        tsParticles.load("tsparticles", {
+          fullScreen: { enable: true, zIndex: -1 },
+          particles: {
+            number: { value: 45 },
+            color: { value: "#1e88e5" },
+            shape: { type: "circle" },
+            opacity: { value: 0.5 },
+            size: { value: 3 },
+            move: { enable: true, speed: 1 },
+            links: {
+              enable: true,
+              distance: 120,
+              color: "#90caf9",
+              opacity: 0.4,
+              width: 1
+            }
+          },
+          background: { color: "#ffffff" }
+        });
+      </script>
+
+<script>
+    function logout() {
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("userEmail");
+      window.location.href = "index.html";
+    }
+
+    function redirectToCourse(course) {
+      if (course === "C Language") {
+        window.location.href = "frontend.html";
+      } else if (course === "HTML & CSS") {
+        window.location.href = "ps.html";
+      } else if (course === "Java BootCamp") {
+        window.location.href = "javabootcamp.html";
+      } else if (course === "C++ Grandmastery") {
+        window.location.href = "C++_Course.html";
+      }
+    }
+
+    function buyCourse(course, amount) {
+      const userEmail = localStorage.getItem("userEmail");
+      if (!userEmail) {
+        alert("Please log in first.");
+        return;
+      }
+
+      var options = {
+        "key": "rzp_test_CWKpvdJclovfui",
+        "amount": amount * 100,
+        "currency": "INR",
+        "name": "Code With Kaustubh",
+        "description": `Payment for ${course}`,
+        "handler": function (response) {
+          alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+
+          let purchases = JSON.parse(localStorage.getItem("purchases")) || {};
+          if (!purchases[userEmail]) purchases[userEmail] = [];
+          if (!purchases[userEmail].includes(course)) purchases[userEmail].push(course);
+          localStorage.setItem("purchases", JSON.stringify(purchases));
+
+          redirectToCourse(course);
+        },
+        "prefill": {
+          "email": userEmail,
+          "contact": "9999999999"
+        },
+        "theme": {
+          "color": "#3399cc"
+        }
+      };
+
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    }
+
+    function updateCourseButtons() {
+      const userEmail = localStorage.getItem("userEmail");
+      const purchases = JSON.parse(localStorage.getItem("purchases")) || {};
+      const userCourses = purchases[userEmail] || [];
+
+      document.querySelectorAll("button[data-course]").forEach(btn => {
+        const course = btn.getAttribute("data-course");
+        if (userCourses.includes(course)) {
+          const continueBtn = document.createElement("button");
+          continueBtn.className = "btn btn-success btn-block";
+          continueBtn.innerText = "Continue";
+          continueBtn.onclick = () => redirectToCourse(course);
+          btn.replaceWith(continueBtn);
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", updateCourseButtons);
+  </script>
+</body>
+</html>
